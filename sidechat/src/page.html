@@ -1,0 +1,620 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sidechat</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+        background: #f6f7f9;
+        color: #202532;
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        min-height: 100vh;
+      }
+      .side {
+        background: #202a3a;
+        color: #fff;
+        padding: 24px 16px;
+      }
+      .brand {
+        font-size: 22px;
+        font-weight: 750;
+        margin: 0 8px 5px;
+      }
+      .sub {
+        color: #aeb8c7;
+        margin: 0 8px 27px;
+        font-size: 12px;
+      }
+      .side h3 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #aeb8c7;
+        margin: 20px 8px 8px;
+      }
+      .channels {
+        display: grid;
+        gap: 4px;
+      }
+      .channel {
+        border: 0;
+        background: none;
+        color: #c8d0dc;
+        text-align: left;
+        padding: 9px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+        font: inherit;
+      }
+      .channel.active,
+      .channel:hover {
+        background: #354256;
+        color: white;
+      }
+      .main {
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 285px;
+        gap: 22px;
+        padding: 28px;
+        max-width: 1400px;
+        width: 100%;
+        margin: auto;
+      }
+      .feed {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 56px);
+        min-height: 550px;
+        background: #fff;
+        border: 1px solid #e6e8ed;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .head {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e9ebef;
+      }
+      .head h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      .head p {
+        margin: 2px 0 0;
+        color: #777f8c;
+      }
+      .messages {
+        padding: 20px 24px;
+        overflow: auto;
+        flex: 1;
+      }
+      .message {
+        padding: 0 0 18px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid #f0f1f3;
+      }
+      .by {
+        font-weight: 650;
+      }
+      .time {
+        color: #9299a4;
+        font-size: 12px;
+        margin-left: 8px;
+      }
+      .body {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin-top: 4px;
+      }
+      .empty {
+        color: #818895;
+        text-align: center;
+        padding: 45px 10px;
+      }
+      .compose {
+        padding: 16px 20px;
+        border-top: 1px solid #e9ebef;
+      }
+      .row {
+        display: flex;
+        gap: 9px;
+      }
+      input,
+      textarea {
+        font: inherit;
+        border: 1px solid #d9dde4;
+        border-radius: 7px;
+        padding: 10px;
+        width: 100%;
+        background: white;
+        color: inherit;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 68px;
+      }
+      .compose textarea {
+        flex: 1;
+      }
+      .compose .row {
+        align-items: flex-end;
+      }
+      button.primary {
+        background: #485fd7;
+        color: #fff;
+        border: 0;
+        border-radius: 7px;
+        padding: 10px 15px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.primary:hover {
+        background: #354bbf;
+      }
+      .panel {
+        display: grid;
+        align-content: start;
+        gap: 18px;
+      }
+      .card {
+        background: white;
+        border: 1px solid #e6e8ed;
+        border-radius: 12px;
+        padding: 18px;
+      }
+      .profile-card {
+        color: #202532;
+      }
+      .card h2 {
+        font-size: 15px;
+        margin: 0 0 13px;
+      }
+      .card textarea {
+        min-height: 90px;
+      }
+      .noteSave {
+        margin-top: 9px;
+      }
+      .tasks {
+        display: grid;
+        gap: 10px;
+      }
+      .task {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+      }
+      .task input {
+        width: auto;
+        margin-top: 4px;
+      }
+      .task.done span {
+        text-decoration: line-through;
+        color: #89909b;
+      }
+      .task-add {
+        margin-top: 13px;
+      }
+      .task-add input {
+        margin-bottom: 8px;
+      }
+      .warning {
+        background: #fff7e8;
+        border: 1px solid #f2d8a7;
+        color: #73531b;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 12px;
+      }
+      .reset {
+        border: 1px solid #d64c4c;
+        background: white;
+        color: #b52e2e;
+        border-radius: 7px;
+        padding: 9px 12px;
+        cursor: pointer;
+        font: inherit;
+      }
+      .status {
+        min-height: 20px;
+        color: #ad3434;
+        font-size: 13px;
+        margin: 8px 0 0;
+      }
+      .arch {
+        color: #7a818c;
+        font-size: 12px;
+        text-align: center;
+      }
+      .loading {
+        padding: 32px;
+        color: #777;
+      }
+      .error {
+        padding: 30px;
+        color: #a22;
+      }
+      @media (max-width: 850px) {
+        .main {
+          grid-template-columns: 1fr;
+          padding: 14px;
+        }
+        .feed {
+          height: 70vh;
+          min-height: 450px;
+        }
+        .panel {
+          grid-template-columns: 1fr 1fr;
+        }
+        .app {
+          grid-template-columns: 160px 1fr;
+        }
+      }
+      @media (max-width: 570px) {
+        .app {
+          display: block;
+        }
+        .side {
+          padding: 13px;
+        }
+        .brand {
+          display: inline-block;
+          margin: 0 12px 0 0;
+        }
+        .sub {
+          display: inline;
+          margin: 0;
+        }
+        .side h3 {
+          display: none;
+        }
+        .channels {
+          display: flex;
+          overflow: auto;
+          margin-top: 10px;
+        }
+        .channel {
+          white-space: nowrap;
+        }
+        .main {
+          padding: 10px;
+        }
+        .panel {
+          grid-template-columns: 1fr;
+        }
+        .feed {
+          min-height: 400px;
+          height: 65vh;
+        }
+        .messages {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="loading">Loading workspace…</div>
+    <script>
+      const app = document.querySelector("#app");
+      let state,
+        active = "general",
+        busy = false;
+      async function call(path, body) {
+        const r = await fetch(
+          "/api" + path,
+          body
+            ? {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(body),
+              }
+            : {},
+        );
+        let data;
+        try {
+          data = await r.json();
+        } catch {
+          throw Error("Unexpected server response");
+        }
+        if (!r.ok) throw Error(data.error || "Request failed");
+        return data;
+      }
+      function esc(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      function render() {
+        if (!state) return;
+        const ch =
+          state.channels.find((x) => x.id === active) || state.channels[0];
+        active = ch.id;
+        app.className = "app";
+        app.innerHTML =
+          '<aside class="side"><div class="brand">' +
+          esc(state.title) +
+          '</div><p class="sub">Demo workspace</p><button type="button" class="channel profile-toggle">👤 Profile · @' +
+          esc(state.currentSlug) +
+          '</button><section class="card profile-card" hidden><h2>Your profile</h2><div>' +
+          esc(state.currentUser) +
+          " · @" +
+          esc(state.currentSlug) +
+          '</div><form class="profile-form" style="margin-top:10px"><input name="slug" value="' +
+          esc(state.currentSlug) +
+          '" maxlength="30" required><button class="primary" style="margin-top:8px">Save slug</button></form><button type="button" class="reset logout" style="margin-top:8px">Log out</button><p class="status" id="profile-status"></p></section><h3>Channels</h3><nav class="channels">' +
+          state.channels
+            .map(
+              (c) =>
+                '<button class="channel ' +
+                (c.id === active ? "active" : "") +
+                '" data-channel="' +
+                esc(c.id) +
+                '"># ' +
+                esc(c.name) +
+                "</button>",
+            )
+            .join("") +
+          '</nav></aside><main class="main"><section class="feed"><header class="head"><h1># ' +
+          esc(ch.name) +
+          '</h1><p>Messages from your team</p></header><div class="messages">' +
+          (state.messages.some((m) => m.channel === active)
+            ? state.messages
+                .filter((m) => m.channel === active)
+                .map(
+                  (m) =>
+                    '<article class="message"><span class="by">' +
+                    esc(m.user) +
+                    '</span><time class="time">' +
+                    new Date(m.created_at).toLocaleString() +
+                    '</time><div class="body">' +
+                    esc(m.body) +
+                    "</div></article>",
+                )
+                .join("")
+            : '<div class="empty">No messages yet. Start the conversation.</div>') +
+          '</div><form class="compose"><div class="row"><textarea name="message" maxlength="2000" placeholder="Message #' +
+          esc(ch.name) +
+          '…" required></textarea><button class="primary">Send</button></div><div style="color:#818895;font-size:12px;margin-top:7px">Posting as ' +
+          esc(state.currentUser) +
+          '</div><p class="status" id="message-status"></p></form></section><aside class="panel"><section class="card"><h2>📌 Pinned note</h2><textarea id="note" maxlength="500">' +
+          esc(ch.note) +
+          '</textarea><button type="button" class="primary noteSave">Save note</button><p class="status" id="note-status"></p></section><section class="card"><h2>✓ Tasks</h2><div class="tasks">' +
+          (state.tasks.length
+            ? state.tasks
+                .map(
+                  (t) =>
+                    '<label class="task ' +
+                    (t.completed ? "done" : "") +
+                    '"><input type="checkbox" data-task="' +
+                    t.id +
+                    '" ' +
+                    (t.completed ? "checked" : "") +
+                    "><span>" +
+                    esc(t.title) +
+                    "</span></label>",
+                )
+                .join("")
+            : '<div class="empty" style="padding:10px">No tasks yet.</div>') +
+          '</div><form class="task-add"><input name="task" maxlength="160" placeholder="Add a task…" required><button class="primary">Add task</button><p class="status" id="task-status"></p></form></section><div class="warning"><strong>Destructive action:</strong> reset permanently replaces workspace content with the original sample data.<br><button class="reset" style="margin-top:9px">Reset to seed</button></div>' +
+          (state.isAdmin
+            ? '<section class="card"><h2>Admin · users</h2><div class="tasks">' +
+                (state.users || [])
+                  .map(
+                    (u) =>
+                      '<div style="border-top:1px solid #eee;padding:9px 0"><strong>' +
+                      esc(u.email) +
+                      '</strong><div style="font-size:12px;color:#778">@' +
+                      esc(u.slug) +
+                      " · " +
+                      (u.approved ? "approved" : "pending") +
+                      (u.must_reset ? " · reset required" : "") +
+                      '</div><div class="row" style="margin-top:7px">' +
+                      (!u.approved
+                        ? '<button class="primary admin-action" data-action="approve" data-email="' +
+                          esc(u.email) +
+                          '">Approve</button>'
+                        : '<button class="reset admin-action" data-action="revoke" data-email="' +
+                          esc(u.email) +
+                          '">Revoke</button>') +
+                      '<button class="reset admin-action" data-action="reset-password" data-email="' +
+                      esc(u.email) +
+                      '">Reset password</button></div></div>',
+                  )
+                  .join("") ||
+              "<p>No accounts.</p>" +
+                '</div><p class="status" id="admin-status"></p></section>'
+            : "") +
+          '<div class="arch">One Worker + one Durable Object; state lives in this object.</div></aside></main>';
+        const messages = app.querySelector(".messages");
+        messages.scrollTop = messages.scrollHeight;
+      }
+      async function act(fn, status) {
+        if (busy) return;
+        busy = true;
+        if (status) status.textContent = "";
+        try {
+          await fn();
+          await refresh();
+        } catch (e) {
+          if (status) status.textContent = e.message;
+          else alert(e.message);
+        } finally {
+          busy = false;
+        }
+      }
+      async function refresh() {
+        try {
+          state = await call("/state");
+          render();
+        } catch (e) {
+          if (
+            e.message === "Please log in" ||
+            e.message === "Password reset required"
+          ) {
+            app.className = "auth";
+            app.innerHTML =
+              '<main style="max-width:420px;margin:12vh auto;background:white;padding:28px;border-radius:12px"><h1>Sidechat</h1><p id="auth-status">' +
+              esc(e.message) +
+              '</p><form id="login"><input name="email" type="email" placeholder="Email" required><input name="password" type="password" placeholder="Password" required style="margin-top:10px"><button class="primary" style="margin-top:10px">Log in</button></form><hr><h2>Request an account</h2><form id="signup"><input name="email" type="email" placeholder="Email" required><input name="slug" placeholder="User slug" required style="margin-top:8px"><input name="password" type="password" placeholder="Password (8+ characters)" required style="margin-top:8px"><button class="primary" style="margin-top:10px">Sign up</button></form></main>';
+            return;
+          }
+          throw e;
+        }
+      }
+      app.addEventListener("click", (e) => {
+        if (e.target.closest(".profile-toggle")) {
+          const card = app.querySelector(".profile-card");
+          card.hidden = !card.hidden;
+        }
+        if (e.target.closest(".logout"))
+          act(
+            () =>
+              call("/logout", {}).then(() => {
+                state = null;
+              }),
+            null,
+          );
+        const b = e.target.closest("[data-channel]");
+        if (b) {
+          active = b.dataset.channel;
+          render();
+        }
+        if (e.target.closest(".noteSave"))
+          act(
+            () =>
+              call("/note", {
+                channel: active,
+                note: app.querySelector("#note").value,
+              }),
+            app.querySelector("#note-status"),
+          );
+        if (e.target.matches(".admin-action")) {
+          const action = e.target.dataset.action,
+            email = e.target.dataset.email;
+          if (
+            action === "revoke" &&
+            !confirm("Revoke access for " + email + "?")
+          )
+            return;
+          if (
+            action === "reset-password" &&
+            !confirm(
+              "Require " + email + " to choose a new password at next login?",
+            )
+          )
+            return;
+          act(
+            () => call("/admin/" + action, { email }),
+            app.querySelector("#admin-status"),
+          );
+        }
+        if (e.target.matches(".reset:not(.admin-action)")) {
+          if (
+            confirm(
+              "This will permanently delete all messages, notes, and tasks, then restore the seeded sample workspace. Continue?",
+            )
+          )
+            act(() => call("/reset", {}));
+        }
+      });
+      app.addEventListener("keydown", (e) => {
+        if (
+          e.target.matches(".compose textarea") &&
+          e.key === "Enter" &&
+          !e.shiftKey
+        ) {
+          e.preventDefault();
+          e.target.closest("form").requestSubmit();
+        }
+      });
+      app.addEventListener("submit", (e) => {
+        const f = e.target;
+        if (f.matches(".profile-form")) {
+          e.preventDefault();
+          act(
+            () => call("/profile", { slug: f.slug.value }),
+            app.querySelector("#profile-status"),
+          );
+          return;
+        }
+        if (f.id === "login" || f.id === "signup") {
+          e.preventDefault();
+          const data = Object.fromEntries(new FormData(f));
+          call(f.id === "login" ? "/login" : "/signup", data)
+            .then(async (d) => {
+              if (f.id === "signup") {
+                document.querySelector("#auth-status").textContent = d.message;
+                return;
+              }
+              if (d.must_reset) {
+                const password = prompt(
+                  "Admin requires you to set a new password (8+ characters):",
+                );
+                if (!password) throw Error("Set your new password to continue");
+                await call("/password", { password });
+              }
+              await refresh();
+            })
+            .catch((err) => {
+              const s = document.querySelector("#auth-status");
+              if (s) s.textContent = err.message;
+            });
+          return;
+        }
+        e.preventDefault();
+        if (f.matches(".compose")) {
+          const status = app.querySelector("#message-status");
+          act(
+            () => call("/message", { channel: active, body: f.message.value }),
+            status,
+          ).then(() => {
+            if (!status.textContent)
+              app.querySelector("[name=message]").value = "";
+          });
+        }
+        if (f.matches(".task-add"))
+          act(
+            () => call("/task", { title: f.task.value }),
+            app.querySelector("#task-status"),
+          );
+      });
+      app.addEventListener("change", (e) => {
+        if (e.target.matches("[data-task]"))
+          act(() =>
+            call("/complete", {
+              id: Number(e.target.dataset.task),
+              completed: e.target.checked,
+            }),
+          );
+      });
+      refresh().catch((e) => {
+        app.className = "error";
+        app.textContent = "Could not load workspace: " + e.message;
+      });
+      setInterval(() => {
+        if (!busy && !document.hidden) refresh().catch(() => {});
+      }, 10000);
+    </script>
+  </body>
+</html>

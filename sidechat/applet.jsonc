@@ -1,0 +1,27 @@
+{
+  "name": "sidechat",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-22",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "APPLET_STATE",
+        "class_name": "AppletState"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "AppletState"
+      ]
+    }
+  ],
+  "applet": {
+    "backup": {
+      "binding": "APPLET_STATE",
+      "object_name": "default"
+    }
+  }
+}

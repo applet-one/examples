@@ -1,0 +1,11 @@
+{
+  "name": "sidechat",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-page.mjs",
+    "dev": "pnpm build && applet dev",
+    "deploy": "pnpm build && applet deploy"
+  }
+}
