@@ -1,0 +1,10 @@
+{
+  "name": "rep-by-rep",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "applet dev",
+    "deploy": "applet deploy"
+  }
+}

@@ -1,0 +1,2 @@
+export const page = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f6f4ee"><meta name="description" content="Your physio routine, one rep at a time."><title>Rep by Rep</title><link rel="stylesheet" href="/styles.css"></head><body><main id="app"><p class="loading">Getting your space ready…</p></main><nav id="tabs" class="tabs" aria-label="Main navigation" hidden></nav><script src="/app.js" defer></script></body></html>`;
