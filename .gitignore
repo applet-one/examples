@@ -1,0 +1,8 @@
+# Local dependencies, build output, and credentials for example apps
+**/node_modules/
+**/.wrangler/
+**/.applet/
+**/.applet-build/
+**/dev.vars
+**/.env
+**/.env.*
