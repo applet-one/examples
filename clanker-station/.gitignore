@@ -1,0 +1,9 @@
+node_modules
+.wrangler
+.applet
+.applet-build
+dev.vars
+.dev.vars
+config.json
+state.json
+*.tmp

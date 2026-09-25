@@ -1,0 +1,1 @@
+export const page = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clanker Station</title><link rel="stylesheet" href="/style.css"><main id="app">Loading…</main><script src="/app.js" defer></script></html>`;

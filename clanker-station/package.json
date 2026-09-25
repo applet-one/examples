@@ -1,0 +1,14 @@
+{
+  "name": "clanker-station",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "applet dev",
+    "deploy": "applet deploy",
+    "test": "node --test daemon/*.test.js src/*.test.js"
+  },
+  "dependencies": {
+    "ws": "^8.21.3"
+  }
+}
