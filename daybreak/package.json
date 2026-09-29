@@ -1,0 +1,11 @@
+{
+  "name": "daybreak",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "applet dev",
+    "deploy": "node scripts/deploy.mjs",
+    "reset-password": "node scripts/reset-password.mjs"
+  }
+}
