@@ -1,6 +1,6 @@
 # sidechat
 
-![Sidechat logged in](screenshots/sidechat-logged-in.png)
+![Sidechat demo](demo/demo.gif)
 
 Sidechat is an Applet for team messages, notes, and tasks.
 

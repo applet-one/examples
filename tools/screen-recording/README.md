@@ -16,4 +16,6 @@ The workflow and future-work status are in `PLAN.md`; copied-code provenance and
 
 A third completed desktop example is **Learning Trail**: [approved storyboard](../../learning-trail/demo/storyboard.md), [isolated preparation and reproduction instructions](../../learning-trail/demo/README.md), and matching [GIF](../../learning-trail/demo/demo.gif) / [MP4](../../learning-trail/demo/demo.mp4). Its five scenes cover workbook import, snapshot publishing, advancement, adaptive support and saved progress, followed by the approved applet.one closing card. Checks, capture and sampled export-frame review passed.
 
+The fourth completed desktop example is **Sidechat**: [approved storyboard](../../sidechat/demo/storyboard.md), [isolated build/account setup and reproduction instructions](../../sidechat/demo/README.md), and matching [GIF](../../sidechat/demo/demo.gif) / [MP4](../../sidechat/demo/demo.mp4). Its five scenes cover channels, messages, pinned notes, shared tasks and persistence after reload, followed by the approved applet.one closing card. Checks, capture and sampled export-frame review passed.
+
 App-specific isolated fixtures, storyboard and scenario must still be authored before recording another app; mobile-web remains unpiloted.

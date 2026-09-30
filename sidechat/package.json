@@ -7,5 +7,9 @@
     "build": "node scripts/build-page.mjs",
     "dev": "pnpm build && applet dev",
     "deploy": "pnpm build && applet deploy"
+  },
+  "devDependencies": {
+    "@pesuto/demotale": "file:../tools/screen-recording/vendor/demotale",
+    "@playwright/test": "1.62.1"
   }
 }
