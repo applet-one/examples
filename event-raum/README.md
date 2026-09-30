@@ -2,6 +2,14 @@
 
 A React + Vite + Tailwind application with local shadcn-style components, served by an Applet Cloudflare Worker. Event and registration data live in a SQLite-backed Durable Object. No payment, email, CRM, accounting, or external asset service is connected.
 
+## Screen recording
+
+![eventraum: from event to registration, with fading English explanations](docs/demo.gif)
+
+[Watch the MP4](docs/demo.mp4) · [Animated GIF](docs/demo.gif) · [Reproduce the recording](demo/README.md)
+
+A ~68-second, five-scene desktop walkthrough with fading English explanations over the German UI: event discovery, member/companion early-bird prices, a discount and registration, self-service lookup, and the protected organizer dashboard. Captured locally with fictional data; the registration stays pending and no payment or email is sent. MP4: 1280×800 / 4.1 MiB. GIF: 720×450 / 9.6 MiB.
+
 ## Screenshots
 
 **Event discovery — desktop**

@@ -6,3 +6,9 @@
 **/dev.vars
 **/.env
 **/.env.*
+
+# Generated screen recordings and browser credentials
+**/demo/output/
+**/.auth/
+**/recordings/
+tools/screen-recording/vendor/demotale/dist/

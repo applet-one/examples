@@ -1,0 +1,31 @@
+---
+name: screen-recording
+description: Plan, approve, and produce reproducible captioned GIF and MP4 walkthroughs of an example's local web or mobile-web UI. Use when asked to record an app, make a product demo, storyboard features, or regenerate a demo after UI changes.
+---
+
+# Screen recording
+
+This is the **Pi entry point**. The editable recorder implementation is in `tools/screen-recording/vendor/demotale/`; it is local code, not an upstream npm runtime dependency. This skill orchestrates it; it does not silently capture a browser session. Start Pi in the `examples/` repository root so this project skill is discovered; use `/reload` after changing this file. Use `/skill:screen-recording <example>` to invoke it explicitly.
+
+Resolve all paths below from the `examples/` repository root (three directories above this `SKILL.md`), not from whatever app subdirectory is currently open. Read `tools/screen-recording/README.md` for setup and `daybreak/demo/README.md` for a tested reference implementation. Read the target app's README, package scripts, UI, API, and existing tests before proposing scenes. Do not activate the third-party `vendor/demo-gif-template/SKILL.md` as a competing Pi skill.
+
+## Gate 1: storyboard — stop for approval
+
+1. Select **3–5 distinct, demonstrable features**. Propose an ordered story with the exact explanation text, visible interaction and assertion for each scene; include audience, desktop vs mobile-web viewport, seeded/fictional data disclosure, title and final frame, rough runtime, local start command, and any account switching. Prefer large centered explanations that fade in/out over a dimmed app (`captions.display: 'dark-screen'`), then show the action unobstructed; the recorder also supports `light-screen` and `banner`.
+2. Prefer localhost. **Do not deploy or use real accounts by default.** For stateful apps, inspect local persistence and run the app from a disposable copy or isolated state directory; a new browser context does not reset a Durable Object. Inspect the app or run exploratory UI checks only with safe disposable data. Do not clear the user's existing `.wrangler`, `.applet`, or hosted state.
+3. Ask the user to approve the proposed story, exact captions, presentation, data-changing actions and target URL. **Stop here.** Approval is required before building/running the capture. If a material change to scene order, caption text, setup, target URL, or behavior becomes necessary, ask again. Approval of one example does not approve all examples.
+
+## Gate 2: implement and check
+
+1. Save the approved proposal as `<example>/demo/storyboard.md` with its source commit ID. Follow `daybreak/demo/` as a structural reference, but choose a free port, date-safe fixture, and selectors appropriate for this app. Create `<example>/demo/*.prepare.ts` for off-camera seeding and `<example>/demo/*.demo.ts` for the **scripted, asserted** onscreen path. Use semantic locators, assertions after every scene, a title card, `demo.note` for synthetic/seeded data, and `demo.step` so the explanation precedes the action. Never expose plaintext passwords or real PII; an approved switch between fictional accounts may show a masked password field.
+2. Use the local recorder: build `tools/screen-recording/vendor/demotale` (`npm ci --ignore-scripts && npm run build`); install it as a **local file dependency** and install the same `@playwright/test` version directly in the app, so its test runner and the scenario share one Playwright instance. Daybreak demonstrates the exact `pnpm` commands and configs. Install Chromium with the app's `./node_modules/.bin/playwright install chromium`. Require Node >=22.12, `pnpm`, `applet`, and system `ffmpeg`; do not pull in `@pesuto/demotale` from the registry. For a fresh build after local recorder changes, refresh the app's file dependency (`pnpm install --force --ignore-scripts`).
+3. Give the app a `demotale.config.ts` + `playwright.config.ts` with a `webServer` that starts its local `dev` command in isolated state; refuse to record against an unrelated server already occupying the port. Use `captions.display: 'dark-screen'` by default, and a gitignored `<example>/demo/output/`. The configuration's `video.formats` must include **both** `gif` and `mp4`. Respect target app build steps (e.g. `event-raum`, `sidechat`).
+4. Run `./node_modules/.bin/demotale check` from the app directory. Inspect the frames under its configured output's `check/`, including the full-screen text and the scene results; fix broken selectors without changing the approved story. If it fails, show the user the failure rather than quietly dropping a scene. Check for secrets, incorrect local origin, clipping, and timing before filming.
+
+## Gate 3: record, review, publish
+
+1. Run `./node_modules/.bin/demotale record` from the app directory. Inspect the actual GIF at multiple timestamps, not only the dry-run frames. Verify fades have finished before actions; ensure the final frame makes sense and that each promised feature is actually shown. Check MP4 duration and GIF dimensions/size with `ffprobe` or equivalent. If GIF size is excessive, tune `video.gifWidth`/`video.gifFps` and run `demotale render` on the **same raw WebM**, then review again.
+2. Only after a passing capture, copy the matching **GIF and MP4** into `<example>/docs/demo.gif` and `<example>/docs/demo.mp4`, or use a matching descriptive basename for an alternate take. Keep raw WebM, credentials, check frames and drafts under ignored output. Do not overwrite another approved take; keep alternatives as named pairs (`demo-banner.gif` + `demo-banner.mp4`). For websites use MP4 with a poster, controls, and reduced-motion support; README GIFs can be linked or embedded with size awareness.
+3. Update the app README with the assets, and add `<example>/demo/README.md` documenting prerequisites, exact rerun/check/render commands, isolated state, output paths and promotion commands. Report artifact links, duration, dimensions, bytes, checks, disclosure and any limitations. No deployment unless separately approved.
+
+For design/provenance and remaining gaps see `tools/screen-recording/PLAN.md` and `tools/screen-recording/SOURCES.md`. The skill is an instruction workflow; the vendored recorder and per-app Playwright scenarios are the executable parts.

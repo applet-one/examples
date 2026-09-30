@@ -7,5 +7,9 @@
     "dev": "applet dev",
     "deploy": "node scripts/deploy.mjs",
     "reset-password": "node scripts/reset-password.mjs"
+  },
+  "devDependencies": {
+    "@pesuto/demotale": "file:../tools/screen-recording/vendor/demotale",
+    "@playwright/test": "1.63.0"
   }
 }
