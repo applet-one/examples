@@ -1,8 +1,6 @@
 # Daybreak — make time for your people
 
-![Daybreak: full-screen narrated demo](docs/demo.gif)
-
-Full-screen version: [GIF](docs/demo.gif) · [MP4 for websites](docs/demo.mp4). Original caption-banner version: [GIF](docs/demo-banner.gif) · [MP4](docs/demo-banner.mp4). [Reproduce the recordings](demo/README.md).
+![Daybreak demo](demo/demo.gif)
 
 An Applet.one Worker app for finding time with friends. Users create accounts, send friend requests by registered email, add one-off availability, view friends’ full free schedules, and request meetings in shared free windows. Acceptance reserves the time for both people. Times use `Europe/Berlin` (CET/CEST).
 

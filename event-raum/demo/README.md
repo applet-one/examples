@@ -2,7 +2,7 @@
 
 The approved story and English wording are in `storyboard.md`. `registration.prepare.ts` bootstraps a fictional admin and controls the sample events, future dates, early-bird prices and discount off camera. `from-event-to-registration.demo.ts` records discovery → member + companion pricing → discounted registration → self-service lookup → organizer dashboard. Each scene has assertions. English explanations fade in/out over a dimmed screen **before** actions; the application's UI is still German. There is no spoken audio.
 
-Published, reviewed pair: [GIF](../docs/demo.gif) (720×450, 5 fps, 67.8 s, 10,104,810 bytes / 9.6 MiB) and [MP4](../docs/demo.mp4) (1280×800, 30 fps, ~67.9 s, 4,326,147 bytes / 4.1 MiB). Both come from the same raw WebM. The app README embeds the GIF and links to both formats. Use the MP4 for website playback with a poster, controls and reduced-motion support.
+Published, reviewed pair: [GIF](demo.gif) (720×450, 5 fps, 67.8 s, 10,104,810 bytes / 9.6 MiB) and [MP4](demo.mp4) (1280×800, 30 fps, ~67.9 s, 4,326,147 bytes / 4.1 MiB). Both come from the same raw WebM. The app README embeds the GIF without recording details; both formats and reproduction instructions live here. Use the MP4 for website playback with a poster, controls and reduced-motion support.
 
 ## Setup and run
 
@@ -50,9 +50,8 @@ Inspect both actual exports at multiple timestamps, verify English captions fade
 The published take uses 720 px / 5 fps (the initial 800 px / 7 fps export was 14.8 MiB). After successful check, capture and visual review, publish **both** files together from `event-raum/`:
 
 ```sh
-mkdir -p docs
-cp demo/output/take/eventraum-from-event-to-registration.gif docs/demo.gif
-cp demo/output/take/eventraum-from-event-to-registration.mp4 docs/demo.mp4
+cp demo/output/take/eventraum-from-event-to-registration.gif demo/demo.gif
+cp demo/output/take/eventraum-from-event-to-registration.mp4 demo/demo.mp4
 ```
 
 The initial dry run caught a required-field marker in the access-code label; the fixed selector passed all five scenes, followed by a successful two-test prepare/capture run. Unit tests: 3 passed; `applet build --dry-run` validated the built disposable Worker artifact. On reruns, all checks must pass again; do not publish a failed or truncated recording.

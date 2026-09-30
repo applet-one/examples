@@ -1,6 +1,6 @@
 # Reproduce the Daybreak recording
 
-The approved five-scene story and exact captions are in `storyboard.md`; `friends.prepare.ts` creates fictional accounts, friendship, and Bob's free slot off camera; `from-free-time-to-plans.demo.ts` films Alice adding time, seeing Bob's slot, requesting a meeting, Bob accepting it, and the resulting booking. `demotale.config.ts` selects a **dark full-screen explanation**: the background dims, large white text fades in, holds for reading, fades out, and only then the browser acts. The original top-banner GIF is kept at `docs/demo-banner.gif` for comparison. The local recorder's code is in `../../tools/screen-recording/vendor/demotale` (not an upstream runtime dependency).
+The approved five-scene story and exact captions are in `storyboard.md`; `friends.prepare.ts` creates fictional accounts, friendship, and Bob's free slot off camera; `from-free-time-to-plans.demo.ts` films Alice adding time, seeing Bob's slot, requesting a meeting, Bob accepting it, and the resulting booking. `demotale.config.ts` selects a **dark full-screen explanation**: the background dims, large white text fades in, holds for reading, fades out, and only then the browser acts. Published media are kept alongside this README: [GIF](demo.gif) · [MP4](demo.mp4). The original top-banner pair remains at [GIF](demo-banner.gif) · [MP4](demo-banner.mp4) for comparison. The local recorder's code is in `../../tools/screen-recording/vendor/demotale` (not an upstream runtime dependency).
 
 Prerequisites: Node.js ≥22.12, pnpm, the Applet CLI on `PATH`, and system `ffmpeg`. Run from the repository's `examples` directory:
 
@@ -25,10 +25,10 @@ The check report and frames are under `demo/output/interstitial/check/`. The rec
 
 ```sh
 # Run from daybreak/ after a successful check + record and visual review.
-cp demo/output/interstitial/daybreak-from-free-time-to-plans.gif docs/demo.gif
-cp demo/output/interstitial/daybreak-from-free-time-to-plans.mp4 docs/demo.mp4
+cp demo/output/interstitial/daybreak-from-free-time-to-plans.gif demo/demo.gif
+cp demo/output/interstitial/daybreak-from-free-time-to-plans.mp4 demo/demo.mp4
 ```
 
-The README embeds `docs/demo.gif`. For a website use `docs/demo.mp4` with a poster, playback controls and reduced-motion support rather than auto-loading the ~7.8 MiB GIF. The earlier banner pair remains at `docs/demo-banner.gif` and `docs/demo-banner.mp4`; never overwrite it while experimenting. To try a pale background and black text, set `captions.display` to `light-screen`. To re-record the banner version, select `banner`, choose another `output` directory and promote it to `docs/demo-banner.*` only after review. If the GIF becomes too large, adjust `video.gifFps`/`video.gifWidth` and run `./node_modules/.bin/demotale render` to convert the **same raw recording** again; review the result before replacing either published asset.
+The app README embeds `demo/demo.gif` without recording details. For a website use `demo/demo.mp4` with a poster, playback controls and reduced-motion support rather than auto-loading the ~7.8 MiB GIF. The earlier banner pair remains at `demo/demo-banner.gif` and `demo/demo-banner.mp4` (paths from the app root); never overwrite it while experimenting. To try a pale background and black text, set `captions.display` to `light-screen`. To re-record the banner version, select `banner`, choose another `output` directory and promote it to `demo/demo-banner.*` only after review. If the GIF becomes too large, adjust `video.gifFps`/`video.gifWidth` and run `./node_modules/.bin/demotale render` to convert the **same raw recording** again; review the result before replacing either published asset.
 
 `demo/output/fixtures.json` holds disposable demo login credentials: never commit or share this directory. Old snapshots under `demo/output/applet-*` may be removed **only after their dev servers have stopped**; do not clear Daybreak's regular `.wrangler` data. The raw WebM is a local working master, not a committed doc asset. This recorder cannot merge captures from two browser contexts, so the account switch is filmed as an ordinary logout/sign-in in one page. Password text is masked in the UI.

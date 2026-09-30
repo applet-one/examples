@@ -12,4 +12,4 @@ Opening title: **eventraum — From event to registration**. Persistent disclosu
 
 Off camera: build the UI in a fresh source copy under ignored `demo/output/applet-*`, with a randomly generated setup key. Bootstrap one fictional admin and update the three seeded sample events with English fictional titles and date-relative future times. The first event uses controlled early-bird pricing and DEMO10 (10%). Each check/capture starts fresh. The recording creates one two-person registration; no deployment, emails, payments or existing app state. Only disposable reference/access credentials appear on screen. Admin password never appears; all generated credentials/raw WebM stay ignored.
 
-Publish the reviewed take as the matching pair `docs/demo.gif` and `docs/demo.mp4`.
+Publish the reviewed take as the matching pair `demo/demo.gif` and `demo/demo.mp4` (paths from the app root).
