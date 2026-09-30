@@ -57,4 +57,3 @@ describe('package shape', () => {
     expect(entry['require']).toBe(entry['import']);
   });
 });
-
