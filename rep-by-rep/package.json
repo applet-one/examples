@@ -6,5 +6,9 @@
   "scripts": {
     "dev": "applet dev",
     "deploy": "applet deploy"
+  },
+  "devDependencies": {
+    "@pesuto/demotale": "file:../tools/screen-recording/vendor/demotale",
+    "@playwright/test": "1.62.1"
   }
 }

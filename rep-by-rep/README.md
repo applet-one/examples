@@ -2,7 +2,7 @@
 
 A small, single-user physio applet for your mobile browser. Make a schedule, record reps or time, and track how each exercise felt. Three optional starter plans are ready to add and edit.
 
-![Rep by Rep daily routine](docs/rep-by-rep-screenshot.png)
+![Rep by Rep demo](demo/demo.gif)
 
 ## Try it
 
