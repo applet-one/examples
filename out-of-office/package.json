@@ -1,0 +1,12 @@
+{
+  "name": "out-of-office",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "applet dev",
+    "deploy": "applet deploy",
+    "build": "applet build --dry-run",
+    "test": "node --test"
+  }
+}

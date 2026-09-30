@@ -1,0 +1,5 @@
+node_modules
+.wrangler
+.applet
+.applet-build
+dev.vars
