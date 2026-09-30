@@ -9,7 +9,7 @@ Prerequisites: Node.js ≥22.12, pnpm, the Applet CLI on `PATH`, and system `ffm
 cd tools/screen-recording/vendor/demotale
 npm ci --ignore-scripts
 npm run build
-cd ../../../daybreak
+cd ../../../../daybreak
 pnpm install --force --ignore-scripts # refresh the local file: copy after recorder edits
 ./node_modules/.bin/playwright install chromium
 # Install system ffmpeg if not already available (e.g. brew install ffmpeg).

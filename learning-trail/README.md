@@ -1,5 +1,7 @@
 # Learning Trail
 
+![Learning Trail demo](demo/demo.gif)
+
 A small learning app that turns educator-curated content into a child-friendly, step-by-step trail. The starter trail teaches equivalent fractions. Educators can download an Excel workbook, edit it, upload it for validation, preview its routing, and publish a fixed content snapshot. Learner progress is saved in the app's storage.
 
 ## Use the app

@@ -9,5 +9,9 @@
   },
   "dependencies": {
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@pesuto/demotale": "file:../tools/screen-recording/vendor/demotale",
+    "@playwright/test": "1.62.1"
   }
 }

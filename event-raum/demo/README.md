@@ -13,7 +13,7 @@ Prerequisites: Node.js ≥22.12, pnpm, `applet` on PATH, system `ffmpeg`, and a 
 cd tools/screen-recording/vendor/demotale
 npm ci --ignore-scripts
 npm run build
-cd ../../../event-raum
+cd ../../../../event-raum
 pnpm install --force --ignore-scripts
 ./node_modules/.bin/playwright install chromium
 pnpm test
