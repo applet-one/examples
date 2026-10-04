@@ -9,7 +9,7 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const output = join(root, 'demo/output');
 await mkdir(output, { recursive: true });
 const dir = await mkdtemp(join(output, 'applet-'));
-for (const name of ['src', 'scripts', 'applet.jsonc', 'package.json', 'index.html', 'vite.config.js']) {
+for (const name of ['src', 'scripts', 'wrangler.jsonc', 'applet.jsonc', 'package.json', 'index.html', 'vite.config.js']) {
   await cp(join(root, name), join(dir, name), { recursive: true });
 }
 await symlink(join(root, 'node_modules'), join(dir, 'node_modules'), 'dir');

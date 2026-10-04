@@ -14,6 +14,8 @@ Open `/demo` to explore three fictional machines:
 
 ![Synthetic demo with three machines and varied session token usage](demo-screenshot.png)
 
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+
 ## Deployment
 
 Generate a setup key:

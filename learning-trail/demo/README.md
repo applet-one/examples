@@ -30,7 +30,7 @@ node --check demo/snapshot.mjs
 
 `pnpm install --force` refreshes the copied local recorder dependency after engine edits. Direct `@playwright/test` is pinned to the engine's installed version (1.62.1), so the fixtures and CLI use the same test runner.
 
-Both check and capture run [snapshot.mjs](snapshot.mjs), copying only `src`, `applet.jsonc` and `package.json` into fresh ignored `demo/output/applet-*` and symlinking `node_modules`. `applet dev --host 127.0.0.1 --port 8793` runs **inside that copy**, with its own Durable Object state. The regular app's `.wrangler`, `.applet`, configuration and hosted state are untouched. `playwright.config.ts` overrides the engine's check-time reuse behavior: an occupied port is refused, not reused. No deployment is performed.
+Both check and capture run [snapshot.mjs](snapshot.mjs), copying only `src`, `wrangler.jsonc`, `applet.jsonc` and `package.json` into fresh ignored `demo/output/applet-*` and symlinking `node_modules`. `applet dev --host 127.0.0.1 --port 8793` runs **inside that copy**, with its own Durable Object state. The regular app's `.wrangler`, `.applet`, configuration and hosted state are untouched. `playwright.config.ts` overrides the engine's check-time reuse behavior: an occupied port is refused, not reused. No deployment is performed.
 
 ## Data and assertions
 

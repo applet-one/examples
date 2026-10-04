@@ -13,6 +13,8 @@ Sidechat is an Applet for team messages, notes, and tasks.
 
 Edit `src/page.html` for the HTML, CSS, and browser-side JavaScript. The server-side API and persistent state are in `src/index.js`. `src/page.js` is generated from the HTML file; do not edit it directly. `pnpm dev` and `pnpm deploy` regenerate it automatically. If you run `applet deploy` directly, run `pnpm build` first.
 
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+
 ## Run locally
 
 ```sh

@@ -4,6 +4,8 @@
 
 An Applet.one Worker app for finding time with friends. Users create accounts, send friend requests by registered email, add one-off availability, view friends’ full free schedules, and request meetings in shared free windows. Acceptance reserves the time for both people. Times use `Europe/Berlin` (CET/CEST).
 
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+
 ## Run locally
 
 ```sh

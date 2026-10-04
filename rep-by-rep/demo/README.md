@@ -29,7 +29,7 @@ node --check demo/snapshot.mjs
 
 Force installation refreshes the copied local engine after engine changes. The direct `@playwright/test` dependency is pinned to 1.62.1 to match the vendored engine's installed runner. Do not substitute an upstream recorder package.
 
-[snapshot.mjs](snapshot.mjs) copies only `src`, `applet.jsonc` and `package.json` to fresh ignored `demo/output/applet-*`, links `node_modules`, and starts `applet dev --host 127.0.0.1 --port 8795` in that copy. There is no separate UI build step. Both checks and captures refuse an occupied port rather than reusing a server. Both preparation and scenario assert the approved local URL before authentication or mutations. The normal `.wrangler`, `.applet`, configuration, passphrase and hosted state are untouched. Do not use ordinary `pnpm dev` for recording against existing state; use the recording configurations above.
+[snapshot.mjs](snapshot.mjs) copies only `src`, `wrangler.jsonc`, `applet.jsonc` and `package.json` to fresh ignored `demo/output/applet-*`, links `node_modules`, and starts `applet dev --host 127.0.0.1 --port 8795` in that copy. There is no separate UI build step. Both checks and captures refuse an occupied port rather than reusing a server. Both preparation and scenario assert the approved local URL before authentication or mutations. The normal `.wrangler`, `.applet`, configuration, passphrase and hosted state are untouched. Do not use ordinary `pnpm dev` for recording against existing state; use the recording configurations above.
 
 ## Fictional setup and assertions
 

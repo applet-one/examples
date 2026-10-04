@@ -30,7 +30,7 @@ node --check demo/snapshot.mjs
 
 The force install refreshes the copied local recorder after engine edits. Direct `@playwright/test` is pinned to 1.62.1, matching the engine's installed test runner.
 
-[snapshot.mjs](snapshot.mjs) copies only `src`, `scripts`, `applet.jsonc` and `package.json` into fresh ignored `demo/output/applet-*` and symlinks `node_modules`. Each check/capture runs `pnpm build` there to regenerate `src/page.js` from `src/page.html`, then `applet dev --host 127.0.0.1 --port 8794` in that same copy. This leaves the normal generated module, `.wrangler`, `.applet`, Applet configuration and hosted state untouched. The Playwright configuration requires fresh state for checks too: an occupied port is refused rather than reused. Both preparation and recording reject target URL overrides before authentication or mutations. No deployment or reset is performed.
+[snapshot.mjs](snapshot.mjs) copies only `src`, `scripts`, `wrangler.jsonc`, `applet.jsonc` and `package.json` into fresh ignored `demo/output/applet-*` and symlinks `node_modules`. Each check/capture runs `pnpm build` there to regenerate `src/page.js` from `src/page.html`, then `applet dev --host 127.0.0.1 --port 8794` in that same copy. This leaves the normal generated module, `.wrangler`, `.applet`, Applet configuration and hosted state untouched. The Playwright configuration requires fresh state for checks too: an occupied port is refused rather than reused. Both preparation and recording reject target URL overrides before authentication or mutations. No deployment or reset is performed.
 
 ## Local account and data
 

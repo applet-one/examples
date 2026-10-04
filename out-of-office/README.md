@@ -29,7 +29,7 @@ The demo counts Monday–Friday working days in UTC, not public holidays or regi
 
 ## Run locally
 
-With the `applet` CLI installed and signed in:
+With Applet CLI 0.2.3 or newer installed (see the shared [configuration guide](../README.md#configuration-and-cli)):
 
 ```sh
 pnpm dev
@@ -54,7 +54,7 @@ Tests require Node.js 22.13+ with `node:sqlite`. They exercise the actual Durabl
 applet deploy
 ```
 
-`applet.jsonc` declares the Worker, SQLite Durable Object migration, public access, and backup binding. No Wrangler installation or separate Cloudflare setup is needed for Applet deployment.
+`wrangler.jsonc` declares the Worker and SQLite Durable Object binding/migration. `applet.jsonc` holds top-level `access` and `backup` settings. No Wrangler installation or separate Cloudflare setup is needed for Applet deployment.
 
 **Live demo:** https://gentlesleepy-meerkat.applet.works
 

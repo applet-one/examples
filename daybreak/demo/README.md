@@ -17,7 +17,7 @@ pnpm install --force --ignore-scripts # refresh the local file: copy after recor
 ./node_modules/.bin/demotale record
 ```
 
-`demo/snapshot.mjs` copies Daybreak source into a new disposable directory under `demo/output/`. The Playwright webServer starts `applet dev` there on **127.0.0.1:8791**; this does not use Daybreak's existing `.wrangler` or any hosted state. Ensure nothing else is using that port before running. The date is calculated ~10 days into the future in Berlin time, so the calendar's month/day will change on reruns.
+`demo/snapshot.mjs` copies Daybreak source, `wrangler.jsonc`, `applet.jsonc` and `package.json` into a new disposable directory under `demo/output/`. The Playwright webServer starts `applet dev` there on **127.0.0.1:8791**; this does not use Daybreak's existing `.wrangler` or any hosted state. Ensure nothing else is using that port before running. The date is calculated ~10 days into the future in Berlin time, so the calendar's month/day will change on reruns.
 
 ## Outputs and publishing
 

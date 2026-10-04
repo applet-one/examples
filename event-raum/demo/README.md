@@ -24,7 +24,7 @@ pnpm test
 
 `pnpm install --force` refreshes the local `file:` recorder dependency after engine edits. The app directly depends on the same Playwright version resolved by the recorder (currently 1.62.1) so the fixtures and CLI share one runner.
 
-Both `check` and `record` start `demo/snapshot.mjs`: it copies app source, UI build files and applet configuration to a fresh `demo/output/applet-*`, shares only `node_modules`, generates a random setup key and builds the UI **inside that copy** before `applet dev --host 127.0.0.1 --port 8792`. Unlike the engine's default check reuse behavior, this app's `playwright.config.ts` explicitly refuses an existing server even for a dry run. The prepare step also refuses an already-initialized admin/database. No deployment command is run; the app's regular `.applet`, `.wrangler`, setup key and database are untouched.
+Both `check` and `record` start `demo/snapshot.mjs`: it copies app source, UI build files and both `wrangler.jsonc` / `applet.jsonc` configuration files to a fresh `demo/output/applet-*`, shares only `node_modules`, generates a random setup key and builds the UI **inside that copy** before `applet dev --host 127.0.0.1 --port 8792`. Unlike the engine's default check reuse behavior, this app's `playwright.config.ts` explicitly refuses an existing server even for a dry run. The prepare step also refuses an already-initialized admin/database. No deployment command is run; the app's regular `.applet`, `.wrangler`, setup key and database are untouched.
 
 ## Fixtures and behavior
 

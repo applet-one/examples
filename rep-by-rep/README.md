@@ -8,6 +8,8 @@ A small, single-user physio applet for your mobile browser. Make a schedule, rec
 
 Open the [Rep by Rep applet](https://liquidlively-ostrich.applet.works). On a fresh deployment, the first visitor sets a four-character passphrase. Four characters offer weak protection, so avoid sensitive health notes. Keep your passphrase safe—there is no recovery. The starter plans are examples, not medical advice; follow your clinician’s guidance.
 
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+
 ## Develop locally
 
 ```sh

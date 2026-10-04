@@ -20,6 +20,8 @@ A React + Vite + Tailwind application with local shadcn-style components, served
 
 More views: [home on mobile](screenshots/live-home-mobile.png) · [registration on desktop](screenshots/live-booking-desktop.png) · [admin on mobile](screenshots/live-admin-mobile.png) · [privacy page on mobile](screenshots/live-privacy-mobile.png).
 
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+
 ## Run and test
 
 ```sh

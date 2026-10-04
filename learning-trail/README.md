@@ -29,14 +29,14 @@ The routing rules are fixed for this MVP: **pass → next skill**, **stuck → a
 
 ## Develop locally
 
-Requirements: Node.js 20+, pnpm, and the Applet CLI.
+Requirements: Node.js 20+, pnpm, and Applet CLI 0.2.3 or newer. See the shared [configuration guide](../README.md#configuration-and-cli).
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-The app is a Worker with a SQLite-backed Durable Object. `applet.jsonc` configures the Worker entry point, Durable Object binding/migration, and Applet backup support. `src/index.js` contains the UI, workbook template generation/import/validation, and persisted app state.
+The app is a Worker with a SQLite-backed Durable Object. `wrangler.jsonc` configures the Worker entry point and Durable Object binding/migration; `applet.jsonc` holds Applet-only access/backup settings. `src/index.js` contains the UI, workbook template generation/import/validation, and persisted app state.
 
 ## Deploy
 

@@ -4,13 +4,13 @@
 
 - This is an Applet.one project. Use the `applet` CLI for Applet development and deployment; do not switch hosting platforms or rewrite the hosting configuration without a clear requirement.
 - Install dependencies with `pnpm install`. Start local development with `pnpm dev`.
-- Main application code is in `src/index.js`; Applet/Worker configuration is in `applet.jsonc`.
+- Main application code is in `src/index.js`; Worker configuration is in `wrangler.jsonc`, and Applet-only hosting settings are in `applet.jsonc`.
 - The app uses a SQLite-backed Durable Object (`APPLET_STATE`) for saved content, published snapshots, and learner progress. The Excel template and import route are generated/handled by the Worker using the `xlsx` package.
 - Before committing changes, run `node --check src/index.js`. For workbook changes, test downloading the template and uploading it to `/api/import`; the starter workbook should validate successfully.
 
 ## Deploy to Applet.one
 
-Deployment requires Node.js 20+, pnpm, installed dependencies, an Applet.one account with access, and an authenticated Applet CLI.
+Deployment requires Node.js 20+, pnpm, installed dependencies, an Applet.one account with access, and an authenticated Applet CLI (0.2.3 or newer).
 
 1. From the project root, install dependencies:
    ```sh
@@ -21,7 +21,7 @@ Deployment requires Node.js 20+, pnpm, installed dependencies, an Applet.one acc
    applet status --json
    ```
    Check that the intended app is `learning-trail`. If the CLI reports missing/expired login, run `applet login` and complete authorization in the browser. Never ask for, print, or store the user's credentials. Applet.one access may require signing up and joining the waiting list at https://applet.one before login/deployment is available.
-3. Inspect `applet.jsonc` before deploying. Preserve its app name, `src/index.js` entry point, compatibility date, Durable Object binding and SQLite migration, and backup configuration unless a deliberate configuration change is needed.
+3. Inspect `wrangler.jsonc` and `applet.jsonc` before deploying. Preserve the Worker app name, `src/index.js` entry point, compatibility date, Durable Object binding and SQLite migration in `wrangler.jsonc`, and the hosting access/backup settings in `applet.jsonc`, unless a deliberate configuration change is needed.
 4. Deploy from this directory:
    ```sh
    applet deploy
