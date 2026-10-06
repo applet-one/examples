@@ -8,6 +8,7 @@
     "deploy": "applet deploy"
   },
   "dependencies": {
+    "esbuild": "^0.28.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

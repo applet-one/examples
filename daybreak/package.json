@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@pesuto/demotale": "file:../tools/screen-recording/vendor/demotale",
-    "@playwright/test": "1.63.0"
+    "@playwright/test": "1.63.0",
+    "esbuild": "^0.28.2"
   }
 }
