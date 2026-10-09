@@ -14,9 +14,10 @@ for (const name of ['src', 'scripts', 'wrangler.jsonc', 'applet.jsonc', 'package
 }
 await symlink(join(root, 'node_modules'), join(dir, 'node_modules'), 'dir');
 const setupKey = randomBytes(32).toString('hex');
-// Explicit environment key replaces any embedded key copied in generated.js.
+// Local-only runtime secret; the UI build never receives the key.
+await writeFile(join(dir, '.dev.vars'), `EVENTRAUM_SETUP_KEY=${setupKey}\n`, { mode: 0o600 });
 const build = spawnSync('pnpm', ['run', 'build:ui'], {
-  cwd: dir, env: { ...process.env, APPLET_SETUP_KEY: setupKey },
+  cwd: dir,
   stdio: ['ignore', 2, 2],
 });
 if (build.status !== 0) throw new Error('Disposable UI build failed');

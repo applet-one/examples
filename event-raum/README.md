@@ -20,13 +20,13 @@ A React + Vite + Tailwind application with local shadcn-style components, served
 
 More views: [home on mobile](screenshots/live-home-mobile.png) · [registration on desktop](screenshots/live-booking-desktop.png) · [admin on mobile](screenshots/live-admin-mobile.png) · [privacy page on mobile](screenshots/live-privacy-mobile.png).
 
-Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.5 or newer (runtime secrets support); see the shared [configuration guide](../README.md#configuration-and-cli).
 
 ## Run and test
 
 ```sh
 pnpm install
-openssl rand -hex 32 > .setup-key # one-time admin bootstrap secret; ignored by git
+(umask 077; printf 'EVENTRAUM_SETUP_KEY=%s\n' "$(openssl rand -hex 32)" > .dev.vars) # local-only runtime secret
 pnpm dev                         # http://127.0.0.1:8787
 pnpm test                        # unit tests
 node scripts/smoke.mjs           # API smoke tests against local dev server
@@ -37,10 +37,32 @@ The UI build is embedded into `src/generated.js` (ignored by git), so `pnpm buil
 
 ## Admin setup and deployment
 
-1. Generate `.setup-key` before building. Deploy with `pnpm run deploy`.
-2. Visit `/admin`, enter the private setup key and a unique password of at least 14 characters. Only the first setup request can create the account. The key is never returned in public API or UI assets.
-3. Remove `.setup-key` and **redeploy** to remove the bootstrap secret from the Worker bundle. Keep the password securely and change it using **Sicherheit** in the dashboard.
-4. Back up state using `applet backup`. Public access is configured in `applet.jsonc`.
+```sh
+# First deployment: use the git-ignored .dev.vars generated above.
+# The setup key stays in runtime secrets, never in the built code.
+pnpm run build:ui
+applet deploy --secrets-file .dev.vars
+
+# Open /admin at the deployed URL.
+# In the setup-key field, paste ONLY the value after EVENTRAUM_SETUP_KEY= in .dev.vars.
+# Choose a password of at least 8 characters and keep it safe.
+# If you see "Willkommen zurück.", an admin already exists: use its password.
+# The setup key cannot reset an existing admin password.
+
+# After successful setup, remove the hosted and local bootstrap secrets.
+# No rebuild or redeploy needed.
+applet secrets delete EVENTRAUM_SETUP_KEY
+rm .dev.vars
+
+# Later deployments (including existing apps with an admin):
+# Password and saved state are preserved; no setup key needed.
+pnpm run deploy
+
+# Optional: download a state backup.
+applet backup
+```
+
+Local `applet dev` reads `.dev.vars` automatically (Node.js 20.12+); deployment only reads it with `--secrets-file`. Legacy `.setup-key` files are no longer used and can be deleted.
 
 Do not publish a usable signup flow for real users until the operator has supplied and reviewed full legal privacy information, retention/deletion policy, contact information, and payment/invoicing procedures. The public examples are fictional; the app is a pilot rather than a production-compliant ticket system.
 

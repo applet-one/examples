@@ -6,6 +6,8 @@ Published, reviewed pair: [GIF](demo.gif) (720×450, 5 fps, 67.8 s, 10,104,810 b
 
 ## Setup and run
 
+**Recording tooling is not installed by this app.** The `@pesuto/demotale` dependency has been removed. The existing demo scripts and historical reproduction instructions below are retained for reference; recording/check commands require separately provisioning that tool. Normal app installation, builds, tests, and deployment do not need it.
+
 Prerequisites: Node.js ≥22.12, pnpm, `applet` on PATH, system `ffmpeg`, and a free local port **8792**. From the `examples/` repository root:
 
 ```sh
@@ -24,7 +26,7 @@ pnpm test
 
 `pnpm install --force` refreshes the local `file:` recorder dependency after engine edits. The app directly depends on the same Playwright version resolved by the recorder (currently 1.62.1) so the fixtures and CLI share one runner.
 
-Both `check` and `record` start `demo/snapshot.mjs`: it copies app source, UI build files and both `wrangler.jsonc` / `applet.jsonc` configuration files to a fresh `demo/output/applet-*`, shares only `node_modules`, generates a random setup key and builds the UI **inside that copy** before `applet dev --host 127.0.0.1 --port 8792`. Unlike the engine's default check reuse behavior, this app's `playwright.config.ts` explicitly refuses an existing server even for a dry run. The prepare step also refuses an already-initialized admin/database. No deployment command is run; the app's regular `.applet`, `.wrangler`, setup key and database are untouched.
+Both `check` and `record` start `demo/snapshot.mjs`: it copies app source, UI build files and both `wrangler.jsonc` / `applet.jsonc` configuration files to a fresh `demo/output/applet-*`, shares only `node_modules`, writes a random setup key to a protected local `.dev.vars` runtime-secret file and builds the UI **inside that copy** before `applet dev --host 127.0.0.1 --port 8792`. Unlike the engine's default check reuse behavior, this app's `playwright.config.ts` explicitly refuses an existing server even for a dry run. The prepare step also refuses an already-initialized admin/database. No deployment command is run; the app's regular `.applet`, `.wrangler`, setup key and database are untouched.
 
 ## Fixtures and behavior
 
@@ -56,4 +58,4 @@ cp demo/output/take/eventraum-from-event-to-registration.mp4 demo/demo.mp4
 
 The initial dry run caught a required-field marker in the access-code label; the fixed selector passed all five scenes, followed by a successful two-test prepare/capture run. Unit tests: 3 passed; `applet build --dry-run` validated the built disposable Worker artifact. On reruns, all checks must pass again; do not publish a failed or truncated recording.
 
-`demo/output/snapshot.json` contains the generated setup key, `fixtures.json` contains the demo admin password, and each snapshot's generated Worker bundle embeds that local setup key. **The whole output directory is ignored: never commit or share it.** Only remove snapshots after their dev servers have stopped; do not delete the app's ordinary state directories. Keep the raw WebM for local re-rendering. The published pair and checked-in scripts/docs are safe to share; their visible participant data are fictional.
+`demo/output/snapshot.json` contains the generated setup key, `fixtures.json` contains the demo admin password, and each snapshot's `.dev.vars` contains that local runtime secret. Generated Worker bundles no longer embed the key. **The whole output directory is ignored: never commit or share it.** Only remove snapshots after their dev servers have stopped; do not delete the app's ordinary state directories. Keep the raw WebM for local re-rendering. The published pair and checked-in scripts/docs are safe to share; their visible participant data are fictional.
