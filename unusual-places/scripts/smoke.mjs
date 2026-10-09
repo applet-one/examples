@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {Client} from '@modelcontextprotocol/sdk/client/index.js';
+import {StreamableHTTPClientTransport} from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+const base=(process.env.BASE_URL||'http://localhost:8000').replace(/\/$/,'');
+const visitor=crypto.randomUUID(),otherVisitor=crypto.randomUUID();
+const headers={'Content-Type':'application/json','X-Visitor-Id':visitor};
+async function get(path,options={}){const response=await fetch(base+path,options);assert.ok(response.ok,`${path}: HTTP ${response.status}`);return response.json();}
+const health=await get('/health');assert.ok(health.ok&&health.destinations>=20);
+const outdoor=await get('/api/places?city=Bonn&radius=100&outdoor=true');assert.ok(outdoor.total>=3);assert.ok(outdoor.places.every(p=>p.outdoor&&p.distanceKm<=100));
+const ids=outdoor.places.slice(0,3).map(p=>p.id);
+await get('/api/state',{method:'PUT',headers,body:JSON.stringify({shortlist:ids,trip:ids})});
+assert.deepEqual((await get('/api/state',{headers})).shortlist,ids);
+assert.deepEqual((await get('/api/state',{headers:{'X-Visitor-Id':otherVisitor}})).shortlist,[]);
+const chat=await get('/api/chat',{method:'POST',headers,body:JSON.stringify({message:'Outdoor places within 100 km of Bonn this weekend',filters:{},selectedIds:ids})});assert.equal(chat.filters.outdoor,true);assert.match(chat.reply,/opening hours/);
+const trip=await get('/api/chat',{method:'POST',headers,body:JSON.stringify({message:'Plan a day trip with lunch',selectedIds:ids})});assert.deepEqual(trip.trip,ids);
+const client=new Client({name:'offbeat-smoke',version:'1.0.0'});await client.connect(new StreamableHTTPClientTransport(new URL(base+'/mcp')));
+assert.equal((await client.listTools()).tools.length,5);
+const found=await client.callTool({name:'search_places',arguments:{city:'Bonn',radius:100,visitorId:visitor,outdoor:true}});assert.deepEqual(found.structuredContent.state.shortlist,ids);assert.ok(found._meta.allPlaces.length>=20);assert.equal(found.structuredContent.allPlaces,undefined);
+const resource=await client.readResource({uri:'ui://offbeat/explore-v1.html'});assert.ok(resource.contents[0].text.includes('window.__EMBEDDED__=true'));assert.ok(resource.contents[0].text.includes(JSON.stringify(base)));assert.equal(resource.contents[0].mimeType,'text/html;profile=mcp-app');
+await client.close();
+await get('/api/state',{method:'PUT',headers,body:JSON.stringify({shortlist:[],trip:[]})});
+console.log(`PASS ${base}: ${health.destinations} destinations; filters, private persistent state, guide, MCP tools and shared embedded resource.`);
