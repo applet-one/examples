@@ -4,6 +4,7 @@
 - [Daybreak](daybreak/README.md) — share free time with friends and book a time that works for both of you.
 - [Eventraum](event-raum/README.md) — a responsive event registration pilot with member and guest pricing, companion bookings, and an admin dashboard.
 - [Learning Trail](learning-trail/README.md) — an educator-curated learning path with workbook import and saved learner progress.
+- [Offbeat](unusual-places/README.md) — a curated unusual-places directory with a map, private shortlists, a day-trip planner, and a shared MCP App interface.
 - [OOOh!](out-of-office/README.md) — a fictional workplace absence planner with self-service time off, shared availability, and handovers.
 - [Rep by Rep](rep-by-rep/README.md) — a physio applet for scheduling exercises and tracking reps, time, and how they felt.
 - [Sidechat](sidechat/README.md) — team messages, notes, and tasks.

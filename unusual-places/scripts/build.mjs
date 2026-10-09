@@ -1,0 +1,12 @@
+import {build} from 'esbuild';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+await mkdir('generated',{recursive:true});
+const bridge=await build({entryPoints:['src/bridge.js'],bundle:true,write:false,format:'iife',platform:'browser',minify:true,target:'es2022'});
+let html=await readFile('src/ui.html','utf8');
+const leafletJS=await readFile('node_modules/leaflet/dist/leaflet.js','utf8');
+const leafletCSS=await readFile('node_modules/leaflet/dist/leaflet.css','utf8');
+html=html.replace(/<link[^>]+href=["'][^"']*leaflet[^"']*["'][^>]*>/gi,'').replace(/<script[^>]+src=["'][^"']*leaflet[^"']*["'][^>]*><\/script>/gi,'');
+const safe=s=>s.replace(/<\/script/gi,'<\\/script');
+html=html.replace('</head>',()=>`<style>${leafletCSS}</style><script>${safe(leafletJS)}</script><script>window.__EMBEDDED__=__EMBED_FLAG__;window.__APP_BASE__=__BASE_ORIGIN__;</script><script>${safe(bridge.outputFiles[0].text)}</script></head>`);
+await writeFile('generated/assets.js',`export const html=${JSON.stringify(html)};\n`);
+console.log('Built shared web/MCP HTML:',Buffer.byteLength(html),'bytes');
