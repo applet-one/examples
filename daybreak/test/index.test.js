@@ -122,6 +122,61 @@ test('login rate limiting starts after eight failures', async t => {
   assert.deepEqual(await response.json(), { error: 'Too many attempts. Try again in 15 minutes.' });
 });
 
+test('friend requests preserve validation, permissions and bidirectional lookup', async t => {
+  const { call, register, post } = harness(t);
+  const alice = await register('Alice');
+  const bob = await register('Bob');
+  const charlie = await register('Charlie');
+  async function expectError(path, body, user, status, error) {
+    const response = await call(path, { method: 'POST', body, cookie: user.cookie });
+    assert.equal(response.status, status);
+    assert.deepEqual(await response.json(), { error });
+  }
+  await expectError('/api/friends/request', { email: 'missing@example.com' }, alice, 400, 'No account found with that email.');
+  await expectError('/api/friends/request', { email: alice.email }, alice, 400, 'You cannot add yourself.');
+  await post('/api/friends/request', { email: ' BOB@EXAMPLE.COM ' }, alice);
+  await expectError('/api/friends/request', { email: alice.email }, bob, 400, 'A friendship or request already exists.');
+  const pending = (await (await call('/api/bootstrap', { cookie: bob.cookie })).json()).friendships[0];
+  assert.equal(pending.requester_name, 'Alice');
+  assert.equal(pending.requester_email, alice.email);
+  assert.equal(pending.addressee_name, 'Bob');
+  assert.equal(pending.addressee_email, bob.email);
+  await expectError('/api/friends/respond', { id: pending.id, action: 'accept' }, alice, 403, 'Not allowed.');
+  await expectError('/api/friends/respond', { id: pending.id, action: 'accept' }, charlie, 403, 'Not allowed.');
+  await expectError('/api/friends/respond', { id: 'missing', action: 'accept' }, bob, 404, 'Request not found.');
+  await post('/api/friends/respond', { id: pending.id, action: 'accept' }, bob);
+  await expectError('/api/friends/respond', { id: pending.id, action: 'accept' }, bob, 404, 'Request not found.');
+  await expectError('/api/friends/request', { email: bob.email }, alice, 400, 'A friendship or request already exists.');
+  for (const [user, friend] of [[alice, bob], [bob, alice]]) {
+    const snapshot = await (await call('/api/bootstrap', { cookie: user.cookie })).json();
+    assert.deepEqual(snapshot.friends, [{ id: friend.id, name: friend.name, email: friend.email }]);
+  }
+  const start = Date.now() + DAY;
+  const end = start + 3600000;
+  for (const user of [alice, bob]) await post('/api/slots', { start, end }, user);
+  // An accepted friendship is found regardless of who originally requested it.
+  await post('/api/meetings/request', { friendId: alice.id, start, end }, bob);
+});
+
+test('friend request decline and cancel delete only authorized pending requests', async t => {
+  const { call, register, post } = harness(t);
+  const alice = await register('Alice');
+  const bob = await register('Bob');
+  for (const [action, actor, unauthorized] of [['decline', bob, alice], ['cancel', alice, bob]]) {
+    await post('/api/friends/request', { email: bob.email }, alice);
+    const pending = (await (await call('/api/bootstrap', { cookie: bob.cookie })).json()).friendships[0];
+    assert.equal((await call('/api/friends/respond', {
+      method: 'POST', body: { id: pending.id, action }, cookie: unauthorized.cookie,
+    })).status, 403);
+    await post('/api/friends/respond', { id: pending.id, action }, actor);
+    for (const user of [alice, bob]) {
+      const snapshot = await (await call('/api/bootstrap', { cookie: user.cookie })).json();
+      assert.deepEqual(snapshot.friendships, []);
+      assert.deepEqual(snapshot.friends, []);
+    }
+  }
+});
+
 test('meeting acceptance splits both slots and declines overlapping pending requests', async t => {
   const { call, register, post, database } = harness(t);
   const alice = await register('Alice');

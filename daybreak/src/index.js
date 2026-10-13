@@ -4,6 +4,15 @@ import { style } from './style.js';
 import { json, fail, cookie } from './http.js';
 import { digest, random, emailOf, validEmail, hashPassword, verifyPassword, cleanUser } from './auth.js';
 import { rows, one, init } from './db.js';
+import {
+  findAcceptedFriendship,
+  listFriendshipsForUser,
+  findFriendshipBetween,
+  insertFriendRequest,
+  findPendingFriendRequest,
+  acceptFriendRequest,
+  deleteFriendRequest,
+} from './queries/friendships.js';
 
 const DAY = 86400000;
 
@@ -11,9 +20,6 @@ const DAY = 86400000;
 function available(db, userId, start, end) {
   // A booking must fit within one current free slot. Accepted meetings carve slots into pieces.
   return !!one(db, 'SELECT id FROM slots WHERE user_id = ? AND start_at <= ? AND end_at >= ? LIMIT 1', userId, start, end);
-}
-function friendship(db, a, b) {
-  return one(db, "SELECT * FROM friendships WHERE status = 'accepted' AND ((requester_id = ? AND addressee_id = ?) OR (requester_id = ? AND addressee_id = ?))", a, b, b, a);
 }
 function reserve(db, userId, start, end) {
   const slot = one(db, 'SELECT * FROM slots WHERE user_id = ? AND start_at <= ? AND end_at >= ? LIMIT 1', userId, start, end);
@@ -127,9 +133,7 @@ export class AppletState {
       // Authenticated routes.
       if (!user) return fail('Please sign in.', 401);
       if (url.pathname === '/api/bootstrap' && request.method === 'GET') {
-        const friendships = rows(db, `SELECT f.*, a.name AS requester_name, a.email AS requester_email, b.name AS addressee_name, b.email AS addressee_email
-          FROM friendships f JOIN users a ON a.id = f.requester_id JOIN users b ON b.id = f.addressee_id
-          WHERE f.requester_id = ? OR f.addressee_id = ? ORDER BY f.created_at DESC`, user.id, user.id);
+        const friendships = listFriendshipsForUser(db, user.id);
         const friends = friendships.filter(f => f.status === 'accepted').map(f => f.requester_id === user.id
           ? { id: f.addressee_id, name: f.addressee_name, email: f.addressee_email }
           : { id: f.requester_id, name: f.requester_name, email: f.requester_email });
@@ -145,17 +149,17 @@ export class AppletState {
         const target = one(db, 'SELECT id FROM users WHERE email = ?', email);
         if (!target) return fail('No account found with that email.');
         if (target.id === user.id) return fail('You cannot add yourself.');
-        if (one(db, 'SELECT id FROM friendships WHERE (requester_id = ? AND addressee_id = ?) OR (requester_id = ? AND addressee_id = ?)', user.id, target.id, target.id, user.id)) return fail('A friendship or request already exists.');
-        db.exec('INSERT INTO friendships VALUES (?, ?, ?, ?, ?)', crypto.randomUUID(), user.id, target.id, 'pending', Date.now());
+        if (findFriendshipBetween(db, user.id, target.id)) return fail('A friendship or request already exists.');
+        insertFriendRequest(db, crypto.randomUUID(), user.id, target.id, Date.now());
         return json({ ok: true });
       }
       if (url.pathname === '/api/friends/respond' && request.method === 'POST') {
-        const friendRequest = one(db, 'SELECT * FROM friendships WHERE id = ? AND status = ?', body.id, 'pending');
+        const friendRequest = findPendingFriendRequest(db, body.id);
         if (!friendRequest) return fail('Request not found.', 404);
         if (body.action === 'accept' && friendRequest.addressee_id === user.id) {
-          db.exec("UPDATE friendships SET status = 'accepted' WHERE id = ?", friendRequest.id);
+          acceptFriendRequest(db, friendRequest.id);
         } else if ((body.action === 'decline' && friendRequest.addressee_id === user.id) || (body.action === 'cancel' && friendRequest.requester_id === user.id)) {
-          db.exec('DELETE FROM friendships WHERE id = ?', friendRequest.id);
+          deleteFriendRequest(db, friendRequest.id);
         } else {
           return fail('Not allowed.', 403);
         }
@@ -176,7 +180,7 @@ export class AppletState {
       }
       if (url.pathname === '/api/meetings/request' && request.method === 'POST') {
         const { friendId, start, end } = body;
-        if (!friendship(db, user.id, friendId)) return fail('Only friends can meet.', 403);
+        if (!findAcceptedFriendship(db, user.id, friendId)) return fail('Only friends can meet.', 403);
         if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < Date.now() - 60000 || end <= start || end - start > DAY || !available(db, user.id, start, end) || !available(db, friendId, start, end)) return fail('This time is no longer free for both of you.');
         if (one(db, "SELECT id FROM meetings WHERE status = 'pending' AND ((requester_id = ? AND recipient_id = ?) OR (requester_id = ? AND recipient_id = ?)) AND start_at < ? AND end_at > ?", user.id, friendId, friendId, user.id, end, start)) return fail('A request for this time already exists.');
         db.exec('INSERT INTO meetings VALUES (?, ?, ?, ?, ?, ?, ?)', crypto.randomUUID(), user.id, friendId, start, end, 'pending', Date.now());
@@ -186,7 +190,7 @@ export class AppletState {
         const meeting = one(db, "SELECT * FROM meetings WHERE id = ? AND status = 'pending'", body.id);
         if (!meeting) return fail('Request not found.', 404);
         if (body.action === 'accept' && meeting.recipient_id === user.id) {
-          if (meeting.start_at < Date.now() || !friendship(db, meeting.requester_id, meeting.recipient_id) || !available(db, meeting.requester_id, meeting.start_at, meeting.end_at) || !available(db, meeting.recipient_id, meeting.start_at, meeting.end_at)) return fail('This time is no longer free for both of you.');
+          if (meeting.start_at < Date.now() || !findAcceptedFriendship(db, meeting.requester_id, meeting.recipient_id) || !available(db, meeting.requester_id, meeting.start_at, meeting.end_at) || !available(db, meeting.recipient_id, meeting.start_at, meeting.end_at)) return fail('This time is no longer free for both of you.');
           reserve(db, meeting.requester_id, meeting.start_at, meeting.end_at);
           reserve(db, meeting.recipient_id, meeting.start_at, meeting.end_at);
           db.exec("UPDATE meetings SET status = 'accepted' WHERE id = ?", meeting.id);
