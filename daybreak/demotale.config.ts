@@ -14,5 +14,5 @@ export default defineConfig({
   },
   video: { formats: ['mp4', 'gif'], gifWidth: 800, gifFps: 7 },
   captions: { vtt: true, transcript: true, display: 'dark-screen' },
-  theme: { base: 'dark', accent: '#75a988' },
+  theme: { base: 'dark', accent: '#b9432c' },
 });

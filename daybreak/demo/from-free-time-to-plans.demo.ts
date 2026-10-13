@@ -17,9 +17,9 @@ test('Daybreak from free time to plans', async ({ page, demo }) => {
   });
   expect(login.ok(), await login.text()).toBeTruthy();
 
-  await demo.card('Daybreak', 'From free time to plans');
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Make room for good company.' })).toBeVisible();
+  await demo.card('Daybreak', 'From free time to plans');
   await demo.hideCard();
   await demo.note('Local demo · fictional accounts');
 
