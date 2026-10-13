@@ -34,6 +34,16 @@ Enter the new password in the interactive prompt. The command writes a salted pa
 
 ## Verify
 
+Run the local characterization tests with Node.js 22.13+ (for built-in `node:sqlite`):
+
+```sh
+pnpm test
+```
+
+These tests call `AppletState` directly with an isolated in-memory SQLite database per test. No running server, deployment, or additional test dependencies are required. They cover assets, request validation, authentication, rate limiting, and meeting reservation side effects. This is not a substitute for testing in the Worker runtime.
+
+For an end-to-end smoke test against a running app:
+
 ```sh
 node scripts/smoke.mjs
 BASE_URL=https://cobaltsparkling-puma.applet.works node scripts/smoke.mjs

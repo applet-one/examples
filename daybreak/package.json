@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "applet dev",
+    "test": "node --test test/*.test.js",
     "deploy": "node scripts/deploy.mjs",
     "reset-password": "node scripts/reset-password.mjs"
   },
