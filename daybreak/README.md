@@ -4,7 +4,7 @@
 
 An Applet.one Worker app for finding time with friends. Users create accounts, send friend requests by registered email, add one-off availability, view friends’ full free schedules, and request meetings in shared free windows. Acceptance reserves the time for both people. Times use `Europe/Berlin` (CET/CEST).
 
-Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI 0.2.3 or newer; see the shared [configuration guide](../README.md#configuration-and-cli).
+Worker configuration lives in `wrangler.jsonc`; Applet-only access/backup settings live in `applet.jsonc`. Use Applet CLI **0.4.0 or newer** (`npm install -g @applet-one/cli@latest`); see the shared [configuration guide](../README.md#configuration-and-cli).
 
 ## Run locally
 
@@ -19,7 +19,9 @@ pnpm dev
 pnpm run deploy
 ```
 
-This deploys the existing Daybreak Applet. It uses Applet’s installed builder and deployment API because the current `applet deploy` CLI tries to create an app on every deploy and fails when an account is already at its 10-app limit. On accounts below the limit, `applet deploy` also works. The live app is at https://cobaltsparkling-puma.applet.works.
+This deploys the existing Daybreak Applet through Applet’s installed builder and workspace-scoped deployment API, without attempting to create another app or synchronize editable app source. It retains the existing app identity, URL, and stored data. The live app is at https://cobaltsparkling-puma.applet.works.
+
+Deployment defaults to the workspace where you are the **personal owner**, regardless of membership order. To target a team, add `"workspace": "your-team-slug"` alongside `access` and `backup` in `applet.jsonc`. The script selects that workspace explicitly and fails if access is missing or removed; it never falls back to another workspace. The app must already exist in the selected workspace. Old `namespace` settings are not supported.
 
 ## Manual password reset
 
@@ -40,7 +42,7 @@ Run the local characterization tests with Node.js 22.13+ (for built-in `node:sql
 pnpm test
 ```
 
-These tests call `AppletState` directly with an isolated in-memory SQLite database per test. No running server, deployment, or additional test dependencies are required. They cover assets, request validation, authentication, rate limiting, and meeting reservation side effects. This is not a substitute for testing in the Worker runtime.
+These tests call `AppletState` directly with an isolated in-memory SQLite database per test. No running server, deployment, or additional test dependencies are required. They cover assets, request validation, authentication, rate limiting, meeting reservation side effects, and deployment workspace selection. This is not a substitute for testing in the Worker runtime.
 
 For an end-to-end smoke test against a running app:
 
