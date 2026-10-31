@@ -1,12 +1,12 @@
-// Deploy an existing app through the Applet API. The current `applet deploy` CLI
-// tries to create the app first, which fails when the account is at its app limit.
-// This uses the same builder and deployment endpoints as the installed CLI.
+// Deploy the existing Daybreak app without attempting app creation or source linking.
+// This uses the installed Applet CLI builder and the workspace-scoped deployment API.
 import { readFileSync, realpathSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { pathToFileURL } from 'node:url';
+import { deploymentWorkspace } from './workspace.mjs';
 
 const cli = realpathSync(execFileSync('which', ['applet'], { encoding: 'utf8' }).trim());
 const { buildAppletProject } = await import(pathToFileURL(resolve(dirname(cli), '../lib/builder.js')).href);
@@ -22,9 +22,8 @@ async function request(path, options = {}) {
 console.log('Building Worker...');
 const build = await buildAppletProject({ cwd: process.cwd() });
 const me = await request('/me');
-const namespace = me.namespaces?.[0]?.slug;
-if (!namespace) throw Error('No Applet namespace found.');
-const endpoint = `/namespaces/${encodeURIComponent(namespace)}/apps/${encodeURIComponent(build.config.name)}`;
+const workspace = deploymentWorkspace(me, build.config.applet?.workspace);
+const endpoint = `/workspaces/${encodeURIComponent(workspace.slug)}/apps/${encodeURIComponent(build.config.name)}`;
 const current = await request(endpoint); // Existing app: never try to create another one.
 const access = build.config.applet?.access || 'public';
 if (current.app.access !== access) await request(endpoint + '/access', { method: 'PATCH', body: JSON.stringify({ access }) });
