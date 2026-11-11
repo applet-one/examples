@@ -1,0 +1,6 @@
+node_modules/
+.applet/
+.applet-build/
+.wrangler/
+playwright-report/
+test-results/

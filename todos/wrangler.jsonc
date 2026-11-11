@@ -1,0 +1,9 @@
+{
+  "name": "todos",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-22",
+  "durable_objects": {
+    "bindings": [{ "name": "TODOS", "class_name": "TodoList" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["TodoList"] }]
+}

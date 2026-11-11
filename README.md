@@ -8,12 +8,16 @@
 - [OOOh!](out-of-office/README.md) — a fictional workplace absence planner with self-service time off, shared availability, and handovers.
 - [Rep by Rep](rep-by-rep/README.md) — a physio applet for scheduling exercises and tracking reps, time, and how they felt.
 - [Sidechat](sidechat/README.md) — team messages, notes, and tasks.
+- [Todos](todos/README.md) — a shared SQLite-backed todo list with browser/API tests and restart verification.
 
 ## Configuration and CLI
 
+For Todos, follow [its own setup and verification instructions](todos/README.md).
+The configuration guidance below applies to the Applet-hosted examples.
+
 Use Node.js 20+ and Applet CLI **0.2.3 or newer** (`npm install -g @applet-one/cli`). Run commands from the example's directory.
 
-Each example uses two configuration files:
+Applet-hosted examples use two configuration files:
 
 - `wrangler.jsonc` — Worker name, entry point, compatibility date, Durable Object binding, and migrations.
 - `applet.jsonc` — Applet-only hosting settings: `access` (public by default) and `backup`.
