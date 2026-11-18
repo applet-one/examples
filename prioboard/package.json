@@ -1,0 +1,24 @@
+{
+  "name": "prioboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "npm run build && applet dev",
+    "check": "npm run build && applet build --dry-run",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "npm run build && node tests/viewer.cjs",
+    "deploy": "npm run build && applet deploy",
+    "format": "prettier --write app.js client server shared scripts tests README.md package.json applet.jsonc"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "js-yaml": "5.5.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "playwright": "^1.56.0",
+    "prettier": "^3.10.1"
+  }
+}
