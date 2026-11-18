@@ -1,5 +1,7 @@
 # Prioboard
 
+![Prioboard demo](demo/demo.gif)
+
 A self-contained multiplayer priority board with Markdown/YAML validation, evidence browsing, calculated ranking, persistent priority overrides, comments, and ZIP export. Source, tests, and a sample dataset are included; no sibling projects or original checkout are required.
 
 ## Run locally

@@ -5,3 +5,4 @@ generated/
 .env
 .env.*
 test-results/
+demo/output/
