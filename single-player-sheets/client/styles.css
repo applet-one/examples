@@ -1,0 +1,357 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f7f8f5;
+  color: #203d34;
+  font:
+    15px/1.5 system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  border: 1px solid #d7dfd9;
+  border-radius: 8px;
+  padding: 9px 15px;
+  background: white;
+  color: #294d40;
+  cursor: pointer;
+  font-weight: 550;
+}
+button:hover {
+  background: #edf3ee;
+  border-color: #90b5a2;
+}
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible {
+  outline: 3px solid #309b78;
+  outline-offset: 3px;
+}
+.primary {
+  background: #246b50;
+  color: white;
+  border-color: #246b50;
+}
+.primary:hover {
+  background: #19563e;
+  color: white;
+}
+.logo {
+  background: #246b50;
+  color: #fff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.section-heading h2 {
+  margin: 0;
+}
+.editor-workspace {
+  position: relative;
+}
+/* Reserve the first ribbon slot for the app-owned File disclosure. Keeping it
+   in this wrapper avoids moving nodes into Univer's React-managed DOM. */
+.file-menu {
+  position: absolute;
+  top: 2px;
+  left: 12px;
+  z-index: 20;
+  font-size: 14px;
+}
+.file-menu summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  line-height: 24px;
+  user-select: none;
+}
+.file-menu summary::-webkit-details-marker {
+  display: none;
+}
+.file-menu summary::after {
+  content: " ▾";
+  font-size: 11px;
+  color: #728677;
+}
+.file-menu[open] summary,
+.file-menu summary:hover {
+  background: #edf3ee;
+}
+.file-menu-items {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #dce3dc;
+  box-shadow: 0 8px 30px #173a3425;
+  border-radius: 10px;
+  padding: 6px;
+  width: 245px;
+}
+.file-menu-items button {
+  display: block;
+  border: 0;
+  border-radius: 5px;
+  text-align: left;
+  width: 100%;
+  font-weight: 450;
+}
+.file-menu-items button:nth-child(3),
+.file-menu-items button:nth-child(5) {
+  border-top: 1px solid #edf0eb;
+  margin-top: 4px;
+  padding-top: 13px;
+}
+.workbook-picker {
+  max-width: 740px;
+  max-height: calc(100dvh - 40px);
+}
+.picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.workbook-list {
+  display: grid;
+  gap: 12px;
+}
+.workbook-card {
+  border: 1px solid #dce3dc;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.workbook-open {
+  display: block;
+  border: 0;
+  border-radius: 0;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px 4px;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.workbook-card p {
+  font-size: 11px;
+  color: #6d7e70;
+  margin: 0 16px 12px;
+}
+.card-actions {
+  display: flex;
+  border-top: 1px solid #edf0eb;
+  padding: 6px;
+  gap: 4px;
+}
+.card-actions button {
+  border: 0;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+.public-warning {
+  font-size: 12px;
+  padding-top: 18px;
+  border-top: 1px solid #e0e6dd;
+  margin-top: 24px;
+}
+.recoveries {
+  margin-top: 28px;
+}
+.recovery-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e5dc;
+  font-size: 13px;
+}
+.recovery-row span {
+  flex: 1;
+  min-width: 180px;
+  overflow-wrap: anywhere;
+}
+.recovery-row button {
+  font-size: 12px;
+}
+#notice,
+#storage-warning {
+  position: relative;
+  z-index: 5;
+  background: #fff0d7;
+  color: #724419;
+  padding: 12px 20px;
+  margin: 0;
+  border-bottom: 1px solid #e4ce9f;
+}
+#storage-warning {
+  background: #ffe6de;
+  color: #713323;
+}
+.editor-header {
+  min-height: 52px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border-bottom: 1px solid #dce5dd;
+}
+.workbook-info {
+  flex: 1;
+  min-width: 0;
+}
+.editor-title {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.save-info {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  text-align: left;
+  font-size: 11px;
+  line-height: 15px;
+  margin-top: 0;
+}
+.last-save {
+  font-size: 10px;
+  color: #7c897d;
+}
+#save-status[data-state="Saved"] {
+  color: #217753;
+}
+#save-status[data-state="Conflict"],
+#save-status[data-state="Error"] {
+  color: #ac4429;
+}
+#editor {
+  height: calc(100dvh - 52px);
+  background: white;
+  min-height: 380px;
+}
+/* Univer's classic ribbon centers both rows by default. Keep the menus
+   anchored to the left, scoped to this editor rather than all app controls. */
+#editor [data-u-comp="ribbon-header-menu"] [role="tablist"],
+#editor [data-u-comp="ribbon-toolbar"] {
+  justify-content: flex-start;
+}
+#editor [data-u-comp="ribbon-header-menu"] [role="tablist"] {
+  padding-left: 80px;
+}
+.conflict {
+  padding: 12px 18px;
+  background: #fff0d7;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.conflict[hidden] {
+  display: none;
+}
+.conflict:not([hidden]) + .editor-workspace #editor {
+  height: calc(100dvh - 128px);
+}
+dialog {
+  max-width: 510px;
+  width: calc(100% - 30px);
+  padding: 30px;
+  border: 1px solid #dce5dd;
+  border-radius: 15px;
+  color: #203d34;
+  box-shadow: 0 20px 100px #173a3425;
+}
+dialog::backdrop {
+  background: #132c2666;
+}
+dialog h2 {
+  margin-top: 0;
+}
+dialog p {
+  color: #6c7c70;
+}
+dialog label {
+  display: block;
+}
+.csv-delimiter {
+  margin-top: 16px;
+}
+dialog select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #a6bbad;
+  border-radius: 6px;
+  background: white;
+  color: inherit;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+dialog input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #a6bbad;
+  border-radius: 6px;
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.loading {
+  padding: 60px 20px;
+  text-align: center;
+}
+@media (max-width: 650px) {
+  .editor-header {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+  dialog {
+    padding: 20px;
+  }
+}

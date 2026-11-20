@@ -1,0 +1,29 @@
+{
+  "name": "single-player-sheets",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "npm run build && applet dev",
+    "check": "npm run build && applet build --dry-run",
+    "deploy": "npm run build && applet deploy",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "npm run build && node tests/browser.js"
+  },
+  "dependencies": {
+    "@univerjs/presets": "1.5.2",
+    "@univerjs/preset-sheets-core": "1.5.2",
+    "@univerjs/preset-sheets-filter": "1.5.2",
+    "@univerjs/preset-sheets-sort": "1.5.2",
+    "@univerjs/preset-sheets-data-validation": "1.5.2",
+    "@univerjs/preset-sheets-conditional-formatting": "1.5.2",
+    "@univerjs/preset-sheets-find-replace": "1.5.2",
+    "@univerjs/preset-sheets-hyper-link": "1.5.2",
+    "@univerjs/preset-sheets-note": "1.5.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "playwright": "1.62.1"
+  }
+}

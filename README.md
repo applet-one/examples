@@ -8,6 +8,7 @@
 - [OOOh!](out-of-office/README.md) — a fictional workplace absence planner with self-service time off, shared availability, and handovers.
 - [Rep by Rep](rep-by-rep/README.md) — a physio applet for scheduling exercises and tracking reps, time, and how they felt.
 - [Sidechat](sidechat/README.md) — team messages, notes, and tasks.
+- [Single-player Sheets](single-player-sheets/README.md) — an OSS Univer spreadsheet editor with workbook management, revision-safe autosave, and browser recovery on pure Applet storage.
 - [Todos](todos/README.md) — a shared SQLite-backed todo list with browser/API tests and restart verification.
 
 ## Configuration and CLI
