@@ -1,0 +1,17 @@
+{
+  "name": "multiplayer-todo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "npm run build && applet dev",
+    "deploy": "npm run build && applet deploy",
+    "test": "node --test test/*.test.js",
+    "test:browser": "playwright test",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}

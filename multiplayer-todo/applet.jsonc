@@ -1,0 +1,4 @@
+{
+  "access": "public",
+  "backup": { "binding": "APPLET_STATE", "object_name": "default" }
+}

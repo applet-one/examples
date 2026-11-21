@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6d54c8"><meta name="referrer" content="no-referrer">
+  <title>Together — multiplayer todo</title><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="welcome-card">
+      <div class="brand">Together</div>
+      <div id="gate-content"><p class="muted">Loading…</p></div>
+    </div>
+  </div>
+  <div id="workspace" class="shell" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="/" id="home">Together</a>
+      <nav aria-label="Task views">
+        <button class="nav-item active" data-view="all">All tasks <b id="nav-all">0</b></button>
+        <button class="nav-item" data-view="mine">Assigned to me <b id="nav-mine">0</b></button>
+        <button class="nav-item" data-view="completed">Completed <b id="nav-done">0</b></button>
+      </nav>
+      <button id="profile" class="profile" aria-label="People and invites" title="People and invites"><span id="my-avatar" class="avatar"></span><span><strong id="my-name"></strong><small id="my-role"></small></span></button>
+    </aside>
+    <main class="main">
+      <section class="board">
+        <span id="connection" class="connection">Connecting</span>
+        <h1 id="view-title">All tasks</h1>
+        <div class="list-toolbar">
+          <div class="tabs" role="group" aria-label="Task status"><button data-filter="open" class="active">To do <span id="tab-open">0</span></button><button data-filter="all">All</button><button data-filter="done">Done</button></div>
+          <input id="search" class="search" type="search" placeholder="Search tasks" aria-label="Find a task">
+        </div>
+        <form id="add-form" class="add-form"><input id="new-title" maxlength="240" placeholder="Add a task…" aria-label="New task title" required autocomplete="off"><button class="button primary" type="submit">Add task</button></form>
+        <div id="task-list" class="task-list"></div>
+        <footer class="board-footer"><span id="list-count"></span></footer>
+      </section>
+    </main>
+  </div>
+  <dialog id="people-dialog" class="people-dialog" aria-label="People and invites">
+    <div class="dialog-header"><h2>People & invites</h2><button class="icon-button close-dialog" aria-label="Close people">✕</button></div>
+    <div id="people-rows" class="people-rows"></div>
+    <form id="invite-form" class="invite-form"><label for="invite-name">Invite a collaborator</label><div><input id="invite-name" placeholder="Name" required maxlength="60"><button class="button primary">Create invite</button></div></form>
+    <p class="security-note">Links grant access. Share them privately.</p>
+  </dialog>
+  <dialog id="task-dialog" class="task-dialog" aria-label="Task details and comments"><div class="dialog-header"><h2 class="detail-heading">Task details</h2><button class="icon-button close-dialog" aria-label="Close task">✕</button></div><div id="task-detail"></div></dialog>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>
